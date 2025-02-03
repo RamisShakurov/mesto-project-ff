@@ -25,10 +25,7 @@ function renderCard(link, name, funcToDelete) {
     templateTitle.textContent = name;
     listOfCards.append(templateClone);
     
-    
     buttonDelete.addEventListener('click', funcToDelete)
-  
-
 }
 
 for (const i of initialCards) {
