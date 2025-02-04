@@ -1,36 +1,27 @@
 'use strict';
-// @todo: Темплейт карточки
 
-// @todo: DOM узлы
-
-// @todo: Функция создания карточки
-
-// @todo: Функция удаления карточки
-
-// @todo: Вывести карточки на страницу
+const listOfCards = document.querySelector('.places__list');
 
 function deleteCard(event) {
-    event.target.closest(".card__delete-button").parentElement.remove()
+    event.target.closest(".card").remove()
 }
 
-function renderCard(link, name, funcToDelete) {
+function renderCard(link, name) {
     const template = document.querySelector('#card-template').content;
-    const templateClone = template.cloneNode(true);
+    const templateClone = template.querySelector('.card').cloneNode(true);
     const templateImage = templateClone.querySelector('.card__image');
     const templateTitle = templateClone.querySelector('.card__title');
-    const listOfCards = document.querySelector('.places__list');
     const buttonDelete = templateClone.querySelector('.card__delete-button');
 
     templateImage.src = link;
+    templateImage.atl = name
     templateTitle.textContent = name;
-    listOfCards.append(templateClone);
-    
-    
-    buttonDelete.addEventListener('click', funcToDelete)
-  
 
+    buttonDelete.addEventListener('click', deleteCard)
+    
+    return templateClone
 }
 
-for (const i of initialCards) {
-    renderCard(i.link, i.name, deleteCard);
-}
+initialCards.forEach(item =>{
+    listOfCards.append(renderCard(item.link, item.name));
+})
