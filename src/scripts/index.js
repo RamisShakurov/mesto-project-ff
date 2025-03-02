@@ -1,9 +1,9 @@
 'use strict';
-import {initialCards, renderCard} from "./cards";
-import {openPopup, closePopup} from "./modal";
-
+import {handleFormSubmitNewCard, initialCards, renderCard, formElement} from "./cards";
+import {openPopup, closePopup, formEditElement, handleFormSubmit} from "./modal";
 
 export const listOfCards = document.querySelector('.places__list');
+
 const popupEdit = {
     popup: document.querySelector('.popup_type_edit'),
     buttonToOpen: document.querySelector('.profile__edit-button'),
@@ -14,14 +14,15 @@ const popupCreateCard = {
     buttonToOpen: document.querySelector('.profile__add-button'),
 }
 
-
 initialCards.forEach(item =>{
     listOfCards.append(renderCard(item.link, item.name));
 })
 
-openPopup(popupEdit.buttonToOpen, popupEdit.popup)
-closePopup(popupEdit.popup)
+openPopup(popupEdit)
+closePopup(popupEdit)
 
+openPopup(popupCreateCard)
+closePopup(popupCreateCard)
 
-openPopup(popupCreateCard.buttonToOpen, popupCreateCard.popup)
-closePopup(popupCreateCard.popup)
+formElement.addEventListener('submit', handleFormSubmitNewCard)
+formEditElement.addEventListener('submit', handleFormSubmit)

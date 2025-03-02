@@ -2,6 +2,7 @@ import {addClass, closePopup, removeClass} from "./modal";
 import {listOfCards} from "./index";
 
 
+
 const  initialCards = [
     {
       name: "Архыз",
@@ -28,9 +29,9 @@ const  initialCards = [
       link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
     }
 ];
-
-const popupImage = document.querySelector('.popup_type_image')
 const formElement = document.forms['new-place']
+const popupImage = {popup: document.querySelector('.popup_type_image')}
+
 const placeName = formElement.elements['place-name']
 const placeLink = formElement.elements['link']
 
@@ -45,7 +46,7 @@ function likeCard(event) {
 
 function handlerImageClick(event) {
     const popupCardImage = document.querySelector('.popup__image')
-    addClass(popupImage)
+    addClass(popupImage.popup)
     popupCardImage.src = event.target.src
     popupCardImage.alt = event.target.alt
     closePopup(popupImage)
@@ -70,13 +71,12 @@ function renderCard(link, name) {
     return templateClone
 }
 
-function handleFormSubmit(event) {
+function handleFormSubmitNewCard(event) {
     event.preventDefault()
     listOfCards.prepend(renderCard(placeLink.value, placeName.value))
     formElement.reset()
     removeClass(formElement.closest('.popup_type_new-card'))
 }
 
-formElement.addEventListener('submit', handleFormSubmit)
 
-export {initialCards, renderCard}
+export {initialCards, renderCard, handleFormSubmitNewCard, formElement}
