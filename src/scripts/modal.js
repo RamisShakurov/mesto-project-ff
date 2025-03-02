@@ -1,3 +1,9 @@
+const formEditElement = document.forms['edit-profile']
+const nameInput = formEditElement.elements.name
+const jobInput = formEditElement.elements.description
+
+
+
 function addClass(popup) {
     popup.classList.add('popup_is-opened')
 }
@@ -21,16 +27,26 @@ function handleOverlayClick(event) {
     }
 }
 
-function openPopup(buttonOpen, popup) {
-    buttonOpen.addEventListener('click', () => addClass(popup))
+function handleFormSubmit(evt) {
+    const profileTitle = document.querySelector('.profile__title')
+    const profileDescription = document.querySelector('.profile__description')
+    evt.preventDefault();
+    profileTitle.textContent = nameInput.value
+    profileDescription.textContent = jobInput.value
+    formEditElement.reset()
+    removeClass(formEditElement.closest('.popup_type_edit'))
+}
+
+function openPopup(popup) {
+    popup.buttonToOpen.addEventListener('click', () => addClass(popup.popup))
 }
 
 function closePopup(popup) {
     document.addEventListener('keydown', handleEscapeKey)
-    popup.addEventListener('click', handleOverlayClick)
+    popup.popup.addEventListener('click', handleOverlayClick)
 
-    const button = popup.querySelector('.popup__close')
-    button.addEventListener('click', () => removeClass(popup))
+    const button = popup.popup.querySelector('.popup__close')
+    button.addEventListener('click', () => removeClass(popup.popup))
 }
 
-export {openPopup, closePopup, addClass, removeClass}
+export {openPopup, closePopup, addClass, removeClass, formEditElement, handleFormSubmit}
