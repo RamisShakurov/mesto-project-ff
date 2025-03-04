@@ -1,5 +1,6 @@
 'use strict';
-import {initialCards, renderCard, deleteCard, likeCard} from "./cards";
+import {initialCards} from "./cards";
+import {renderCard, deleteCard, likeCard} from './card'
 import {setOpenPopupListener, setClosePopupListener, closePopup, openPopup} from "./modal";
 
 const formEditElement = document.forms['edit-profile']
@@ -54,6 +55,14 @@ function handleFormSubmitNewCard(event) {
     formNewPlace.reset()
     closePopup(formNewPlace.closest('.popup_type_new-card'))
 }
+
+function openPopupProfile() {
+    jobInput.value = profileDescription.textContent
+    nameInput.value = profileTitle.textContent
+    openPopup(popupEdit.popup)
+}
+
+popupEdit.buttonToOpen.addEventListener('click', openPopupProfile)
 
 initialCards.forEach(cardData =>{
     listOfCards.append(renderCard(cardData, deleteCard, likeCard, handlerImageClick));

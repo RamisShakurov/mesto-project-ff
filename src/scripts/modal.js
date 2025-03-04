@@ -1,5 +1,6 @@
 function openPopup(popup) {
     popup.classList.add('popup_is-opened')
+    document.addEventListener('keydown', handleEscapeKey)
 }
 
 function closePopup(popup) {
@@ -24,18 +25,7 @@ function handleOverlayClick(event) {
 }
 
 function setOpenPopupListener(popup) {
-    popup.buttonToOpen.addEventListener('click', () => {
-
-        document.addEventListener('keydown', handleEscapeKey)
-
-        if(popup.popup.classList.contains('popup_type_edit')) {
-            const currentName =  popup.popup.querySelector('.popup__input_type_name')
-            const currentDescription = popup.popup.querySelector('.popup__input_type_description')
-            currentName.value  = document.querySelector('.profile__title').textContent
-            currentDescription.value = document.querySelector('.profile__description').textContent
-        }
-        openPopup(popup.popup)
-    })
+    popup.buttonToOpen.addEventListener('click', () => openPopup(popup.popup))
 }
 
 function setClosePopupListener(popup) {
