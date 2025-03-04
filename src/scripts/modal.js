@@ -1,52 +1,49 @@
-const formEditElement = document.forms['edit-profile']
-const nameInput = formEditElement.elements.name
-const jobInput = formEditElement.elements.description
-
-
-
-function addClass(popup) {
+function openPopup(popup) {
     popup.classList.add('popup_is-opened')
 }
 
-function removeClass(popup) {
+function closePopup(popup) {
     popup.classList.remove('popup_is-opened')
+    document.removeEventListener('keydown', handleEscapeKey)
+
 }
 
 function handleEscapeKey(event) {
     if (event.key === 'Escape') {
         const openedPopup = document.querySelector('.popup_is-opened');
         if (openedPopup) {
-            removeClass(openedPopup);
+            closePopup(openedPopup);
         }
     }
 }
 
 function handleOverlayClick(event) {
     if (event.target.classList.contains('popup')) {
-        removeClass(event.target);
+        closePopup(event.target);
     }
 }
 
-function handleFormSubmit(evt) {
-    const profileTitle = document.querySelector('.profile__title')
-    const profileDescription = document.querySelector('.profile__description')
-    evt.preventDefault();
-    profileTitle.textContent = nameInput.value
-    profileDescription.textContent = jobInput.value
-    formEditElement.reset()
-    removeClass(formEditElement.closest('.popup_type_edit'))
+function setOpenPopupListener(popup) {
+    popup.buttonToOpen.addEventListener('click', () => {
+
+        document.addEventListener('keydown', handleEscapeKey)
+
+        if(popup.popup.classList.contains('popup_type_edit')) {
+            const currentName =  popup.popup.querySelector('.popup__input_type_name')
+            const currentDescription = popup.popup.querySelector('.popup__input_type_description')
+            currentName.value  = document.querySelector('.profile__title').textContent
+            currentDescription.value = document.querySelector('.profile__description').textContent
+        }
+        openPopup(popup.popup)
+    })
 }
 
-function openPopup(popup) {
-    popup.buttonToOpen.addEventListener('click', () => addClass(popup.popup))
-}
+function setClosePopupListener(popup) {
 
-function closePopup(popup) {
-    document.addEventListener('keydown', handleEscapeKey)
     popup.popup.addEventListener('click', handleOverlayClick)
-
     const button = popup.popup.querySelector('.popup__close')
-    button.addEventListener('click', () => removeClass(popup.popup))
+    button.addEventListener('click', () => closePopup(popup.popup))
+
 }
 
-export {openPopup, closePopup, addClass, removeClass, formEditElement, handleFormSubmit}
+export {setOpenPopupListener, setClosePopupListener, openPopup, closePopup}

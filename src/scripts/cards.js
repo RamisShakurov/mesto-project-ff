@@ -1,8 +1,3 @@
-import {addClass, closePopup, removeClass} from "./modal";
-import {listOfCards} from "./index";
-
-
-
 const  initialCards = [
     {
       name: "Архыз",
@@ -29,12 +24,6 @@ const  initialCards = [
       link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
     }
 ];
-const formElement = document.forms['new-place']
-const popupImage = {popup: document.querySelector('.popup_type_image')}
-
-const placeName = formElement.elements['place-name']
-const placeLink = formElement.elements['link']
-
 
 function deleteCard(event) {
     event.target.closest('.card').remove()
@@ -44,15 +33,7 @@ function likeCard(event) {
     event.target.classList.toggle('card__like-button_is-active')
 }
 
-function handlerImageClick(event) {
-    const popupCardImage = document.querySelector('.popup__image')
-    addClass(popupImage.popup)
-    popupCardImage.src = event.target.src
-    popupCardImage.alt = event.target.alt
-    closePopup(popupImage)
-}
-
-function renderCard(link, name) {
+function renderCard(cardData, onDeleteCard, onLikeCard, onOpenImagePopup ) {
     const template = document.querySelector('#card-template').content;
     const templateClone = template.querySelector('.card').cloneNode(true);
     const templateImage = templateClone.querySelector('.card__image');
@@ -60,23 +41,15 @@ function renderCard(link, name) {
     const buttonDelete = templateClone.querySelector('.card__delete-button');
     const buttonLike = templateClone.querySelector('.card__like-button')
 
-    templateImage.src = link;
-    templateImage.alt = name
-    templateTitle.textContent = name;
+    templateImage.src = cardData.link;
+    templateImage.alt = cardData.name
+    templateTitle.textContent = cardData.name;
 
-    templateImage.addEventListener('click', handlerImageClick)
-    buttonDelete.addEventListener('click', deleteCard)
-    buttonLike.addEventListener('click', likeCard)
+    templateImage.addEventListener('click', () => onOpenImagePopup(event))
+    buttonDelete.addEventListener('click', () => onDeleteCard(event))
+    buttonLike.addEventListener('click', () => onLikeCard(event))
 
     return templateClone
 }
 
-function handleFormSubmitNewCard(event) {
-    event.preventDefault()
-    listOfCards.prepend(renderCard(placeLink.value, placeName.value))
-    formElement.reset()
-    removeClass(formElement.closest('.popup_type_new-card'))
-}
-
-
-export {initialCards, renderCard, handleFormSubmitNewCard, formElement}
+export {initialCards, renderCard, deleteCard, likeCard}

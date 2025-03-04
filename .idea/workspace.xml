@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef4d0a28-e5ae-4098-b74b-3da767089aae" name="Changes" comment="Исправления №1" />
+    <list default="true" id="ef4d0a28-e5ae-4098-b74b-3da767089aae" name="Changes" comment="Исправления №1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/cards.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/cards.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/modal.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,6 +116,7 @@
       <workItem from="1740725849432" duration="20164000" />
       <workItem from="1740838904380" duration="15962000" />
       <workItem from="1740899604792" duration="16180000" />
+      <workItem from="1741073429897" duration="2814000" />
     </task>
     <task id="LOCAL-00001" summary="try">
       <option name="closed" value="true" />
