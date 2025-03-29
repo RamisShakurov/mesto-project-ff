@@ -2,6 +2,7 @@
 import {initialCards} from "./cards";
 import {renderCard, deleteCard, likeCard} from './card'
 import {setOpenPopupListener, setClosePopupListener, closePopup, openPopup} from "./modal";
+import {enableValidation, clearValidation} from "./validation";
 
 const formEditElement = document.forms['edit-profile']
 const nameInput = formEditElement.elements.name
@@ -19,7 +20,7 @@ const popupEdit = {
     popup: document.querySelector('.popup_type_edit'),
     buttonToOpen: document.querySelector('.profile__edit-button'),
 }
-
+//
 const popupCreateCard = {
     popup: document.querySelector('.popup_type_new-card'),
     buttonToOpen: document.querySelector('.profile__add-button'),
@@ -29,6 +30,15 @@ const popupOpenImage = {popup: document.querySelector('.popup_type_image')}
 
 const popupCardImage = document.querySelector('.popup__image')
 const popupCaption = document.querySelector('.popup__caption')
+
+const configValidation = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_visible'
+}
 
 function handlerImageClick(event) {
     openPopup(popupOpenImage.popup)
@@ -59,22 +69,34 @@ function handleFormSubmitNewCard(event) {
 function openPopupProfile() {
     jobInput.value = profileDescription.textContent
     nameInput.value = profileTitle.textContent
+
     openPopup(popupEdit.popup)
 }
 
+function openCreateProfile() {
+    inputNameFormAddNewCard.value = ''
+    inputLinkFormAddNewCard.value = ''
+
+    openPopup(popupCreateCard.popup)
+}
+
 popupEdit.buttonToOpen.addEventListener('click', openPopupProfile)
+popupCreateCard.buttonToOpen.addEventListener('click', openCreateProfile)
 
 initialCards.forEach(cardData =>{
     listOfCards.append(renderCard(cardData, deleteCard, likeCard, handlerImageClick));
 })
 
-setOpenPopupListener(popupEdit)
+setOpenPopupListener(popupEdit, clearValidation, configValidation)
 setClosePopupListener(popupEdit)
 
-setOpenPopupListener(popupCreateCard)
+setOpenPopupListener(popupCreateCard, clearValidation, configValidation)
 setClosePopupListener(popupCreateCard)
 
 setClosePopupListener(popupOpenImage)
 
 formNewPlace.addEventListener('submit', handleFormSubmitNewCard)
 formEditElement.addEventListener('submit', handleFormEditSubmit)
+
+
+enableValidation(configValidation)

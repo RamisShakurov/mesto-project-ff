@@ -24,8 +24,12 @@ function handleOverlayClick(event) {
     }
 }
 
-function setOpenPopupListener(popup) {
-    popup.buttonToOpen.addEventListener('click', () => openPopup(popup.popup))
+function setOpenPopupListener(popup, clearPopup, validationConfig) {
+
+    popup.buttonToOpen.addEventListener('click', () => {
+        openPopup(popup.popup)
+        clearPopup(popup.popup, validationConfig)
+    })
 }
 
 function setClosePopupListener(popup) {
