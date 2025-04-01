@@ -4,5 +4,6 @@ import './scripts/modal'
 import './scripts/card'
 import './scripts/cards'
 import './scripts/validation'
+import './scripts/api'
 
 
