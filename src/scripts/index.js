@@ -134,6 +134,11 @@ function openCreateCard() {
     openPopup(popupCreateCard.popup)
 }
 
+function openChangeLogo() {
+    inputLogo.value = ''
+    ç(popupChangeLogo.popup)
+}
+
 function handleDeleteConfirm(cardId, cardElement) {
     cardToDelete.idCard = cardId
     cardToDelete.elementCard = cardElement
@@ -159,6 +164,7 @@ function handleLikeToggle(id, likeStatus, buttonLike,  currentCountLike) {
 
 }
 
+popupChangeLogo.buttonToOpen.addEventListener('click', openChangeLogo)
 popupEdit.buttonToOpen.addEventListener('click', openPopupProfile)
 popupCreateCard.buttonToOpen.addEventListener('click', openCreateCard)
 
