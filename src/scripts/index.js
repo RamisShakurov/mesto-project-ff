@@ -60,6 +60,7 @@ const cardToDelete = {
     idCard: '',
     elementCard: null
 }
+let userId = null
 
 function loader(loadingStatus, button, textLoading = 'Сохранение...', afterLoadingText = 'Сохранить') {
     button.textContent = loadingStatus ? textLoading : afterLoadingText
@@ -83,10 +84,12 @@ function handleFormEditSubmit(evt) {
         profileTitle.textContent = currentData.name
         profileDescription.textContent = currentData.about
 
+        formEditElement.reset()
+        closePopup(popupEdit.popup)
+
     }).catch(err => `Error: ${err}`)
         .finally(() => loader(false, evt.submitter))
-    formEditElement.reset()
-    closePopup(popupEdit.popup)
+
 }
 
 function handleFormSubmitNewCard(event) {
@@ -97,10 +100,11 @@ function handleFormSubmitNewCard(event) {
     event.preventDefault()
     loader(true, event.submitter)
     addNewCard(newCardData).then(res => {
-        listOfCards.prepend(renderCard(res, handleDeleteConfirm, toggleLike, handlerImageClick, res.owner._id))
+        listOfCards.prepend(renderCard(res, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId))
+        formNewPlace.reset()
     }).catch(err => `Error: ${err}`)
         .finally(() => loader(false, event.submitter))
-    formNewPlace.reset()
+
     closePopup(formNewPlace.closest('.popup_type_new-card'))
 }
 
@@ -109,21 +113,21 @@ function handleFormSubmitNewLogo(event) {
     loader(true, event.submitter)
     changeLogo(inputLogo.value).then(newLogo => {
         logoImage.style.backgroundImage = `url(${newLogo.avatar})`
+        formEditElement.reset()
+        closePopup(popupChangeLogo.popup)
     }).catch(err => `Error: ${err}`)
         .finally(() => loader(false, event.submitter))
-    formEditElement.reset()
-    closePopup(popupChangeLogo.popup)
+
 }
 
 function openPopupProfile() {
-    getProfileInfo().then(data => {
-        jobInput.value = data.about
-        nameInput.value = data.name
-    }).catch(err => `Error: ${err}`)
+        jobInput.value = profileDescription.textContent
+        nameInput.value = profileTitle.textContent
+
     openPopup(popupEdit.popup)
 }
 
-function openCreateProfile() {
+function openCreateCard() {
     inputNameFormAddNewCard.value = ''
     inputLinkFormAddNewCard.value = ''
 
@@ -147,8 +151,16 @@ function handleFormDeleteConfirm(evt) {
 
 }
 
+function handleLikeToggle(id, likeStatus, buttonLike,  currentCountLike) {
+    toggleLike(id, likeStatus).then(likeToggle => {
+        buttonLike.classList.toggle('card__like-button_is-active')
+        currentCountLike.textContent = likeToggle.likes.length
+    }).catch(err => `Error: ${err}`)
+
+}
+
 popupEdit.buttonToOpen.addEventListener('click', openPopupProfile)
-popupCreateCard.buttonToOpen.addEventListener('click', openCreateProfile)
+popupCreateCard.buttonToOpen.addEventListener('click', openCreateCard)
 
 
 setOpenPopupListener(popupEdit, clearValidation, configValidation)
@@ -174,12 +186,12 @@ enableValidation(configValidation)
 
 Promise.all([getProfileInfo(), getInitialCards()])
     .then(([dataProfile, cards]) => {
-
             profileTitle.textContent = dataProfile.name
             profileDescription.textContent = dataProfile.about
             logoImage.style.backgroundImage = `url(${dataProfile.avatar})`
+            userId = dataProfile['_id']
             cards.forEach(cardData => {
-                listOfCards.append(renderCard(cardData, handleDeleteConfirm, toggleLike, handlerImageClick, dataProfile._id));
+                listOfCards.append(renderCard(cardData, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
             })
         }
     ).catch(err => `Error: ${err}`)

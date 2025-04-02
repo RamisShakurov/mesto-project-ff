@@ -29,11 +29,7 @@ function renderCard(cardData, handleDeleteConfirm, onLikeCard, onOpenImagePopup,
     })
     buttonLike.addEventListener('click', () => {
         const likeStatus = !buttonLike.classList.contains('card__like-button_is-active')
-        onLikeCard(cardData['_id'], likeStatus).then(likeToggle => {
-            buttonLike.classList.toggle('card__like-button_is-active')
-            currentCountLike.textContent = likeToggle.likes.length
-        }).catch(err => `Error: ${err}`)
-
+        onLikeCard(cardData['_id'], likeStatus, buttonLike, currentCountLike)
     })
 
     return templateClone
