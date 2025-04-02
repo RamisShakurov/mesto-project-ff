@@ -149,48 +149,10 @@ function renderCard(cardData, handleDeleteConfirm, onLikeCard, onOpenImagePopup,
   });
   buttonLike.addEventListener('click', function () {
     var likeStatus = !buttonLike.classList.contains('card__like-button_is-active');
-    onLikeCard(cardData['_id'], likeStatus).then(function (likeToggle) {
-      buttonLike.classList.toggle('card__like-button_is-active');
-      currentCountLike.textContent = likeToggle.likes.length;
-    }).catch(function (err) {
-      return "Error: ".concat(err);
-    });
+    onLikeCard(cardData['_id'], likeStatus, buttonLike, currentCountLike);
   });
   return templateClone;
 }
-
-
-/***/ }),
-
-/***/ "./src/scripts/cards.js":
-/*!******************************!*\
-  !*** ./src/scripts/cards.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   initialCards: () => (/* binding */ initialCards)
-/* harmony export */ });
-var initialCards = [{
-  name: "Архыз",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg"
-}, {
-  name: "Челябинская область",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg"
-}, {
-  name: "Иваново",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg"
-}, {
-  name: "Камчатка",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg"
-}, {
-  name: "Холмогорский район",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg"
-}, {
-  name: "Байкал",
-  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg"
-}];
 
 
 /***/ }),
@@ -264,6 +226,7 @@ var cardToDelete = {
   idCard: '',
   elementCard: null
 };
+var userId = null;
 function loader(loadingStatus, button) {
   var textLoading = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Сохранение...';
   var afterLoadingText = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'Сохранить';
@@ -285,13 +248,13 @@ function handleFormEditSubmit(evt) {
   (0,_api__WEBPACK_IMPORTED_MODULE_3__.editProfile)(newData).then(function (currentData) {
     profileTitle.textContent = currentData.name;
     profileDescription.textContent = currentData.about;
+    formEditElement.reset();
+    (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupEdit.popup);
   }).catch(function (err) {
     return "Error: ".concat(err);
   }).finally(function () {
     return loader(false, evt.submitter);
   });
-  formEditElement.reset();
-  (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupEdit.popup);
 }
 function handleFormSubmitNewCard(event) {
   var newCardData = {
@@ -301,13 +264,13 @@ function handleFormSubmitNewCard(event) {
   event.preventDefault();
   loader(true, event.submitter);
   (0,_api__WEBPACK_IMPORTED_MODULE_3__.addNewCard)(newCardData).then(function (res) {
-    listOfCards.prepend((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(res, handleDeleteConfirm, _api__WEBPACK_IMPORTED_MODULE_3__.toggleLike, handlerImageClick, res.owner._id));
+    listOfCards.prepend((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(res, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
+    formNewPlace.reset();
   }).catch(function (err) {
     return "Error: ".concat(err);
   }).finally(function () {
     return loader(false, event.submitter);
   });
-  formNewPlace.reset();
   (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(formNewPlace.closest('.popup_type_new-card'));
 }
 function handleFormSubmitNewLogo(event) {
@@ -315,24 +278,20 @@ function handleFormSubmitNewLogo(event) {
   loader(true, event.submitter);
   (0,_api__WEBPACK_IMPORTED_MODULE_3__.changeLogo)(inputLogo.value).then(function (newLogo) {
     logoImage.style.backgroundImage = "url(".concat(newLogo.avatar, ")");
+    formEditElement.reset();
+    (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupChangeLogo.popup);
   }).catch(function (err) {
     return "Error: ".concat(err);
   }).finally(function () {
     return loader(false, event.submitter);
   });
-  formEditElement.reset();
-  (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupChangeLogo.popup);
 }
 function openPopupProfile() {
-  (0,_api__WEBPACK_IMPORTED_MODULE_3__.getProfileInfo)().then(function (data) {
-    jobInput.value = data.about;
-    nameInput.value = data.name;
-  }).catch(function (err) {
-    return "Error: ".concat(err);
-  });
+  jobInput.value = profileDescription.textContent;
+  nameInput.value = profileTitle.textContent;
   (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openPopup)(popupEdit.popup);
 }
-function openCreateProfile() {
+function openCreateCard() {
   inputNameFormAddNewCard.value = '';
   inputLinkFormAddNewCard.value = '';
   (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openPopup)(popupCreateCard.popup);
@@ -354,8 +313,16 @@ function handleFormDeleteConfirm(evt) {
     return loader(false, evt.submitter, 'Удаление...', 'Да');
   });
 }
+function handleLikeToggle(id, likeStatus, buttonLike, currentCountLike) {
+  (0,_api__WEBPACK_IMPORTED_MODULE_3__.toggleLike)(id, likeStatus).then(function (likeToggle) {
+    buttonLike.classList.toggle('card__like-button_is-active');
+    currentCountLike.textContent = likeToggle.likes.length;
+  }).catch(function (err) {
+    return "Error: ".concat(err);
+  });
+}
 popupEdit.buttonToOpen.addEventListener('click', openPopupProfile);
-popupCreateCard.buttonToOpen.addEventListener('click', openCreateProfile);
+popupCreateCard.buttonToOpen.addEventListener('click', openCreateCard);
 (0,_modal__WEBPACK_IMPORTED_MODULE_1__.setOpenPopupListener)(popupEdit, _validation__WEBPACK_IMPORTED_MODULE_2__.clearValidation, configValidation);
 (0,_modal__WEBPACK_IMPORTED_MODULE_1__.setClosePopupListener)(popupEdit);
 (0,_modal__WEBPACK_IMPORTED_MODULE_1__.setOpenPopupListener)(popupCreateCard, _validation__WEBPACK_IMPORTED_MODULE_2__.clearValidation, configValidation);
@@ -376,8 +343,9 @@ Promise.all([(0,_api__WEBPACK_IMPORTED_MODULE_3__.getProfileInfo)(), (0,_api__WE
   profileTitle.textContent = dataProfile.name;
   profileDescription.textContent = dataProfile.about;
   logoImage.style.backgroundImage = "url(".concat(dataProfile.avatar, ")");
+  userId = dataProfile['_id'];
   cards.forEach(function (cardData) {
-    listOfCards.append((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(cardData, handleDeleteConfirm, _api__WEBPACK_IMPORTED_MODULE_3__.toggleLike, handlerImageClick, dataProfile._id));
+    listOfCards.append((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(cardData, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
   });
 }).catch(function (err) {
   return "Error: ".concat(err);
@@ -577,10 +545,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scripts_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scripts/index.js */ "./src/scripts/index.js");
 /* harmony import */ var _scripts_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/modal */ "./src/scripts/modal.js");
 /* harmony import */ var _scripts_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripts/card */ "./src/scripts/card.js");
-/* harmony import */ var _scripts_cards__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripts/cards */ "./src/scripts/cards.js");
-/* harmony import */ var _scripts_validation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scripts/validation */ "./src/scripts/validation.js");
-/* harmony import */ var _scripts_api__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scripts/api */ "./src/scripts/api.js");
-
+/* harmony import */ var _scripts_validation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripts/validation */ "./src/scripts/validation.js");
+/* harmony import */ var _scripts_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scripts/api */ "./src/scripts/api.js");
 
 
 
