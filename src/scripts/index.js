@@ -87,7 +87,7 @@ function handleFormEditSubmit(evt) {
         formEditElement.reset()
         closePopup(popupEdit.popup)
 
-    }).catch(err => `Error: ${err}`)
+    }).catch(err => console.log(`Error: ${err}`))
         .finally(() => loader(false, evt.submitter))
 
 }
@@ -102,10 +102,11 @@ function handleFormSubmitNewCard(event) {
     addNewCard(newCardData).then(res => {
         listOfCards.prepend(renderCard(res, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId))
         formNewPlace.reset()
-    }).catch(err => `Error: ${err}`)
+        closePopup(formNewPlace.closest('.popup_type_new-card'))
+    }).catch(err => console.log(`Error: ${err}`))
         .finally(() => loader(false, event.submitter))
 
-    closePopup(formNewPlace.closest('.popup_type_new-card'))
+
 }
 
 function handleFormSubmitNewLogo(event) {
@@ -115,28 +116,26 @@ function handleFormSubmitNewLogo(event) {
         logoImage.style.backgroundImage = `url(${newLogo.avatar})`
         formEditElement.reset()
         closePopup(popupChangeLogo.popup)
-    }).catch(err => `Error: ${err}`)
+    }).catch(err => console.log(`Error: ${err}`))
         .finally(() => loader(false, event.submitter))
 
 }
 
 function openPopupProfile() {
-        jobInput.value = profileDescription.textContent
-        nameInput.value = profileTitle.textContent
-
+    jobInput.value = profileDescription.textContent
+    nameInput.value = profileTitle.textContent
     openPopup(popupEdit.popup)
 }
 
 function openCreateCard() {
     inputNameFormAddNewCard.value = ''
     inputLinkFormAddNewCard.value = ''
-
     openPopup(popupCreateCard.popup)
 }
 
 function openChangeLogo() {
     inputLogo.value = ''
-    ç(popupChangeLogo.popup)
+    openPopup(popupChangeLogo.popup)
 }
 
 function handleDeleteConfirm(cardId, cardElement) {
@@ -151,16 +150,16 @@ function handleFormDeleteConfirm(evt) {
     deleteCard(cardToDelete.idCard).then(() => {
         cardToDelete.elementCard.remove()
         closePopup(popupConfirmDelete.popup)
-    }).catch(err => `Error: ${err}`)
+    }).catch(err => console.log(`Error: ${err}`))
         .finally(() => loader(false, evt.submitter, 'Удаление...', 'Да'))
 
 }
 
-function handleLikeToggle(id, likeStatus, buttonLike,  currentCountLike) {
+function handleLikeToggle(id, likeStatus, buttonLike, currentCountLike) {
     toggleLike(id, likeStatus).then(likeToggle => {
         buttonLike.classList.toggle('card__like-button_is-active')
         currentCountLike.textContent = likeToggle.likes.length
-    }).catch(err => `Error: ${err}`)
+    }).catch(err => console.log(`Error: ${err}`))
 
 }
 
@@ -200,4 +199,4 @@ Promise.all([getProfileInfo(), getInitialCards()])
                 listOfCards.append(renderCard(cardData, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
             })
         }
-    ).catch(err => `Error: ${err}`)
+    ).catch(err => console.log(`Error: ${err}`))
