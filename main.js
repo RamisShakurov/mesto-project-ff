@@ -251,7 +251,7 @@ function handleFormEditSubmit(evt) {
     formEditElement.reset();
     (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupEdit.popup);
   }).catch(function (err) {
-    return "Error: ".concat(err);
+    return console.log("Error: ".concat(err));
   }).finally(function () {
     return loader(false, evt.submitter);
   });
@@ -266,12 +266,12 @@ function handleFormSubmitNewCard(event) {
   (0,_api__WEBPACK_IMPORTED_MODULE_3__.addNewCard)(newCardData).then(function (res) {
     listOfCards.prepend((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(res, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
     formNewPlace.reset();
+    (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(formNewPlace.closest('.popup_type_new-card'));
   }).catch(function (err) {
-    return "Error: ".concat(err);
+    return console.log("Error: ".concat(err));
   }).finally(function () {
     return loader(false, event.submitter);
   });
-  (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(formNewPlace.closest('.popup_type_new-card'));
 }
 function handleFormSubmitNewLogo(event) {
   event.preventDefault();
@@ -281,7 +281,7 @@ function handleFormSubmitNewLogo(event) {
     formEditElement.reset();
     (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupChangeLogo.popup);
   }).catch(function (err) {
-    return "Error: ".concat(err);
+    return console.log("Error: ".concat(err));
   }).finally(function () {
     return loader(false, event.submitter);
   });
@@ -296,6 +296,10 @@ function openCreateCard() {
   inputLinkFormAddNewCard.value = '';
   (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openPopup)(popupCreateCard.popup);
 }
+function openChangeLogo() {
+  inputLogo.value = '';
+  (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openPopup)(popupChangeLogo.popup);
+}
 function handleDeleteConfirm(cardId, cardElement) {
   cardToDelete.idCard = cardId;
   cardToDelete.elementCard = cardElement;
@@ -308,7 +312,7 @@ function handleFormDeleteConfirm(evt) {
     cardToDelete.elementCard.remove();
     (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closePopup)(popupConfirmDelete.popup);
   }).catch(function (err) {
-    return "Error: ".concat(err);
+    return console.log("Error: ".concat(err));
   }).finally(function () {
     return loader(false, evt.submitter, 'Удаление...', 'Да');
   });
@@ -318,9 +322,10 @@ function handleLikeToggle(id, likeStatus, buttonLike, currentCountLike) {
     buttonLike.classList.toggle('card__like-button_is-active');
     currentCountLike.textContent = likeToggle.likes.length;
   }).catch(function (err) {
-    return "Error: ".concat(err);
+    return console.log("Error: ".concat(err));
   });
 }
+popupChangeLogo.buttonToOpen.addEventListener('click', openChangeLogo);
 popupEdit.buttonToOpen.addEventListener('click', openPopupProfile);
 popupCreateCard.buttonToOpen.addEventListener('click', openCreateCard);
 (0,_modal__WEBPACK_IMPORTED_MODULE_1__.setOpenPopupListener)(popupEdit, _validation__WEBPACK_IMPORTED_MODULE_2__.clearValidation, configValidation);
@@ -348,7 +353,7 @@ Promise.all([(0,_api__WEBPACK_IMPORTED_MODULE_3__.getProfileInfo)(), (0,_api__WE
     listOfCards.append((0,_card__WEBPACK_IMPORTED_MODULE_0__.renderCard)(cardData, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
   });
 }).catch(function (err) {
-  return "Error: ".concat(err);
+  return console.log("Error: ".concat(err));
 });
 
 /***/ }),
