@@ -227,10 +227,16 @@ var cardToDelete = {
   elementCard: null
 };
 var userId = null;
+var profileImage = document.querySelector('.profile__image');
+var loaderImage = document.querySelector('.loader-logo');
 function loader(loadingStatus, button) {
   var textLoading = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'Сохранение...';
   var afterLoadingText = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'Сохранить';
   button.textContent = loadingStatus ? textLoading : afterLoadingText;
+}
+function loaderLogo(loadingStatus) {
+  profileImage.classList.toggle('profile__image-hidden', loadingStatus);
+  loaderImage.classList.toggle('loader-visible', loadingStatus);
 }
 function handlerImageClick(event) {
   (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openPopup)(popupOpenImage.popup);
@@ -341,6 +347,7 @@ formEditElement.addEventListener('submit', handleFormEditSubmit);
 formNewLogo.addEventListener('submit', handleFormSubmitNewLogo);
 formConfirm.addEventListener('submit', handleFormDeleteConfirm);
 (0,_validation__WEBPACK_IMPORTED_MODULE_2__.enableValidation)(configValidation);
+loaderLogo(true);
 Promise.all([(0,_api__WEBPACK_IMPORTED_MODULE_3__.getProfileInfo)(), (0,_api__WEBPACK_IMPORTED_MODULE_3__.getInitialCards)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 2),
     dataProfile = _ref2[0],
@@ -354,6 +361,8 @@ Promise.all([(0,_api__WEBPACK_IMPORTED_MODULE_3__.getProfileInfo)(), (0,_api__WE
   });
 }).catch(function (err) {
   return console.log("Error: ".concat(err));
+}).finally(function () {
+  return loaderLogo(false);
 });
 
 /***/ }),

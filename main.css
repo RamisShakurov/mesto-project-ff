@@ -1,3 +1,11 @@
+/*!***********************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/blocks/loader/loader-logo.css ***!
+  \***********************************************************************************************************************************************************/
+.loader-logo{animation:rotation 1s linear infinite;border:5px solid;border-color:#fff #fff transparent;border-radius:50%;box-sizing:border-box;display:inline-block;height:120px;left:0;position:absolute;top:0;visibility:hidden;width:120px}@keyframes rotation{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}
+/*!**************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/blocks/loader/loader-visible.css ***!
+  \**************************************************************************************************************************************************************/
+.loader-visible{visibility:visible}
 /*!**************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/vendor/normalize.css ***!
   \**************************************************************************************************************************************************/
@@ -61,7 +69,7 @@
 /*!***********************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/blocks/profile/__image/profile__image.css ***!
   \***********************************************************************************************************************************************************************/
-.profile__image{background-position:50%;background-size:cover;border-radius:50%;height:120px;margin:0 29px 0 0;position:relative;width:120px}.profile__image:hover:before{background:url(a086f758840ae814ecde.svg) 50% no-repeat rgba(0,0,0,.8);content:"";height:100%;left:0;position:absolute;top:0;width:100%}@media screen and (max-width:740px){.profile__image{margin:0 10px 0 0}}@media screen and (max-width:480px){.profile__image{margin-right:0}}
+.profile__image{background-position:50%;background-size:cover;border-radius:50%;height:120px;margin:0 29px 0 0;position:relative;width:120px}.profile__image-hidden{visibility:hidden}.profile__image:hover:before{background:url(a086f758840ae814ecde.svg) 50% no-repeat rgba(0,0,0,.8);content:"";height:100%;left:0;position:absolute;top:0;width:100%}@media screen and (max-width:740px){.profile__image{margin:0 10px 0 0}}@media screen and (max-width:480px){.profile__image{margin-right:0}}
 /*!********************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/blocks/profile/profile.css ***!
   \********************************************************************************************************************************************************/
