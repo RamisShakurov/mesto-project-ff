@@ -10,6 +10,10 @@
   margin: 0 29px 0 0;
 }
 
+.profile__image-hidden {
+  visibility: hidden;
+}
+
 .profile__image:hover::before {
   content: '';
   position: absolute;

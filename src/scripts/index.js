@@ -62,8 +62,16 @@ const cardToDelete = {
 }
 let userId = null
 
+const profileImage = document.querySelector('.profile__image')
+const loaderImage = document.querySelector('.loader-logo')
+
 function loader(loadingStatus, button, textLoading = 'Сохранение...', afterLoadingText = 'Сохранить') {
     button.textContent = loadingStatus ? textLoading : afterLoadingText
+}
+
+function loaderLogo(loadingStatus) {
+    profileImage.classList.toggle('profile__image-hidden', loadingStatus)
+    loaderImage.classList.toggle('loader-visible', loadingStatus)
 }
 
 function handlerImageClick(event) {
@@ -189,6 +197,8 @@ formConfirm.addEventListener('submit', handleFormDeleteConfirm)
 
 enableValidation(configValidation)
 
+
+loaderLogo(true)
 Promise.all([getProfileInfo(), getInitialCards()])
     .then(([dataProfile, cards]) => {
             profileTitle.textContent = dataProfile.name
@@ -199,4 +209,4 @@ Promise.all([getProfileInfo(), getInitialCards()])
                 listOfCards.append(renderCard(cardData, handleDeleteConfirm, handleLikeToggle, handlerImageClick, userId));
             })
         }
-    ).catch(err => console.log(`Error: ${err}`))
+    ).catch(err => console.log(`Error: ${err}`)).finally(() => loaderLogo(false))
